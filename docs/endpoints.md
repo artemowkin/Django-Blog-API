@@ -27,7 +27,7 @@ DELETE-запросы
 
 PUT-запросы
 
-* `/api/v1/posts/<id>/` - для обновления поста нужно отправить POST запрос с JSON body `{'title': 'new_or_old_title', 'body': 'new_or_old_body', 'tags': ['new', 'or', 'old', 'tags']}`
+* `/api/v1/posts/<id>/` - для обновления поста нужно отправить PUT запрос с JSON body `{'title': 'new_or_old_title', 'body': 'new_or_old_body', 'tags': ['new', 'or', 'old', 'tags']}`
 
 # Авторизация
 
