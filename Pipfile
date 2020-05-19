@@ -1,0 +1,17 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+
+[packages]
+django = "*"
+django-taggit = "*"
+djangorestframework = "*"
+django-taggit-serializer = "*"
+django-rest-auth = "*"
+django-allauth = "*"
+
+[requires]
+python_version = "3.8"
