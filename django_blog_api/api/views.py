@@ -10,6 +10,25 @@ from .permissions import IsAuthorOrReadOnly
 
 
 class PostViewSet(ModelViewSet):
+    """
+    retrieve:
+        Return the giving blog post
+
+    list:
+        Return the list of blog posts
+
+    create:
+        Create a new blog post
+
+    update:
+        Update the given blog post
+
+    partial_update:
+        Update the given fields of the post
+
+    delete:
+        Delete the given post
+    """
     permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -19,11 +38,21 @@ class PostViewSet(ModelViewSet):
 
 
 class UserViewSet(ReadOnlyModelViewSet):
+    """
+    retrieve:
+        Return the giving user
+
+    list:
+        Return the list of existing users
+    """
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
 
 class PostsTagList(ListAPIView):
+    """
+    Return the list of blog posts with the given tag's slug
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
@@ -32,6 +61,9 @@ class PostsTagList(ListAPIView):
 
 
 class AuthorPosts(ListAPIView):
+    """
+    Return the list of user's posts
+    """
     queryset = Post.objects.all()
     serializer_class = PostSerializer
 
