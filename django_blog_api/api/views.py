@@ -1,6 +1,7 @@
 from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
+                                        IsAuthenticated)
 from django.contrib.auth import get_user_model
 from taggit.models import Tag
 
@@ -22,8 +23,7 @@ class PostViewSet(ModelViewSet):
 
     update:
         Update the given blog post
-
-    partial_update:
+partial_update:
         Update the given fields of the post
 
     delete:
@@ -69,3 +69,15 @@ class AuthorPosts(ListAPIView):
 
     def filter_queryset(self, queryset):
         return queryset.filter(author__id=self.kwargs.get('pk'))
+
+
+class CurrentAuthorPosts(ListAPIView):
+    """
+    Return the list of current user's posts
+    """
+    permission_classes = (IsAuthenticated,)
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return super().get_queryset().filter(author=self.request.user)
