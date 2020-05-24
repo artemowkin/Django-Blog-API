@@ -2,12 +2,46 @@ from rest_framework.generics import ListAPIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
                                         IsAuthenticated)
+from rest_framework.response import Response
+from rest_framework import status
 from django.contrib.auth import get_user_model
 from taggit.models import Tag
 
-from posts.models import Post
-from .serializers import PostSerializer, UserSerializer
+from posts.models import Post, Comment
+from .serializers import PostSerializer, UserSerializer, CommentSerializer
 from .permissions import IsAuthorOrReadOnly
+
+
+class CommentViewSet(ModelViewSet):
+    """
+    retrieve:
+        Return the post comment with given id
+
+    list:
+        Return the list of all existing comments
+
+    create:
+        Create a new post comment
+
+    update:
+        Update the post comment with given id
+
+    partial_update:
+        Update the given fields of the post comment with given id
+
+    delete:
+        Delete the post comment with given id
+    """
+    queryset = Comment.objects.filter(deleted=False)
+    serializer_class = CommentSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+    def delete(self, request, pk, format=None):
+        obj = self.get_object(pk)
+        obj.deleted = True
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class PostViewSet(ModelViewSet):
@@ -23,7 +57,8 @@ class PostViewSet(ModelViewSet):
 
     update:
         Update the given blog post
-partial_update:
+
+    partial_update:
         Update the given fields of the post
 
     delete:
