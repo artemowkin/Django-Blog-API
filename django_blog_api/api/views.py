@@ -32,6 +32,7 @@ class CommentViewSet(ModelViewSet):
     delete:
         Delete the post comment with given id
     """
+    permission_classes = [IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     queryset = Comment.objects.filter(deleted=False)
     serializer_class = CommentSerializer
 
