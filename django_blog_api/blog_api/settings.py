@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'drf_yasg',
     'corsheaders',
-    'whitenoise.runserver_nostatic'
+    'whitenoise.runserver_nostatic',
 
     # Local
     'api.apps.ApiConfig',
