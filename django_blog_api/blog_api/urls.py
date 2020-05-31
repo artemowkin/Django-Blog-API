@@ -7,7 +7,7 @@ from drf_yasg import openapi
 schema_view = get_schema_view(
     openapi.Info(
         title="Blog API",
-        default_version="v1",
+        default_version="v2",
         description="Our first Blog REST API",
         license=openapi.License(name='GPL-3.0'),
     ),
@@ -16,11 +16,25 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    # Django admin
     path('admin/', admin.site.urls),
+
+    # API version 1
     path('api/v1/', include('api.urls')),
     path('api/v1/auth/', include('rest_auth.urls')),
     path('api/v1/auth/registration/', include('rest_auth.registration.urls')),
+
+    # API version 2
+    path('api/v2/', include('apiv2.urls')),
+    path('api/v2/auth/', include('rest_auth.urls')),
+    path('api/v2/auth/registration/', include('rest_auth.registration.urls')),
+
+    # Browsable API Auth
     path('api-auth/', include('rest_framework.urls')),
+
+    # Docs
     path('docs/', schema_view.with_ui('redoc', cache_timeout=0)),
+
+    # Local apps
     path('', include('posts.urls')),
 ]

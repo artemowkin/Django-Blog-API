@@ -10,7 +10,6 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = get_user_model()
-        ref_name = 'Users_v1'
         fields = ('id', 'username', 'email')
 
 
@@ -34,17 +33,13 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        ref_name = 'Comments_v1'
         fields = ('id', 'text', 'author', 'post', 'created')
 
 
 class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
     tags = TagSlugListSerializerField()
     author = UserSerializer(read_only=True)
-    comments = CommentSerializer(many=True, read_only=True)
 
     class Meta:
         model = Post
-        ref_name = 'Posts_v1'
-        fields = ('id', 'author', 'title', 'body', 'created', 'tags',
-                  'comments')
+        fields = ('id', 'author', 'title', 'body', 'created', 'tags')

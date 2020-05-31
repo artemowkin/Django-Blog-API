@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
     # Local
     'api.apps.ApiConfig',
+    'apiv2.apps.Apiv2Config',
     'posts.apps.PostsConfig',
 ]
 
