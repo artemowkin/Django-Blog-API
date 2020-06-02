@@ -1,9 +1,17 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from taggit.models import Tag
 from taggit_serializer.serializers import (TagListSerializerField, TagList,
                                            TaggitSerializer)
 
 from posts.models import Post, Comment
+
+
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tag
+        fields = ('name', 'slug')
 
 
 class UserSerializer(serializers.ModelSerializer):

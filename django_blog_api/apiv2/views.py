@@ -8,7 +8,8 @@ from django.contrib.auth import get_user_model
 from taggit.models import Tag
 
 from posts.models import Post, Comment
-from .serializers import PostSerializer, UserSerializer, CommentSerializer
+from .serializers import (PostSerializer, UserSerializer, CommentSerializer,
+                          TagSerializer)
 from .permissions import IsAuthorOrReadOnly
 
 
@@ -123,3 +124,11 @@ class CurrentAuthorPosts(ListAPIView):
 
     def get_queryset(self):
         return super().get_queryset().filter(author=self.request.user)
+
+
+class TagsList(ListAPIView):
+    """
+    Return the list of all tags
+    """
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
