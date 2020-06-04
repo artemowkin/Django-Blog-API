@@ -7,7 +7,7 @@ from taggit_serializer.serializers import (TagListSerializerField, TagList,
 from posts.models import Post, Comment
 
 
-class TagSerializer(serializers.ModelSerializer):
+class TagSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     class Meta:
         model = Tag
@@ -21,21 +21,6 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email')
 
 
-class TagSlugListSerializerField(TagListSerializerField):
-
-    def to_representation(self, value):
-        if not isinstance(value, TagList):
-            if not isinstance(value, list):
-                if self.order_by:
-                    tags = value.all().order_by(*self.order_by)
-                else:
-                    tags = value.all()
-                value = [{'slug': tag.slug, 'name': tag.name} for tag in tags]
-            value = TagList(value, pretty_print=self.pretty_print)
-
-        return value
-
-
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
 
@@ -45,9 +30,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(TaggitSerializer, serializers.ModelSerializer):
-    tags = TagSlugListSerializerField()
     author = UserSerializer(read_only=True)
 
     class Meta:
         model = Post
-        fields = ('id', 'author', 'title', 'body', 'created', 'tags')
+        fields = ('id', 'author', 'title', 'body', 'created')

@@ -52,6 +52,36 @@ class PostCommentsViewSet(ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class PostTagsViewSet(ModelViewSet):
+    """
+    retrieve:
+        Return given tag of the post
+
+    list:
+        Return the tags list of the post
+
+    create:
+        Create a new tag of the post
+
+    update:
+        Update the given tag of the post
+
+    partial_update:
+        Update the given tag of the post
+
+    delete:
+        Delete the given tag of the post
+    """
+    lookup_field = 'slug'
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+
+    def get_queryset(self):
+        post = Post.objects.get(pk=self.kwargs.get('post_pk'))
+        return post.tags.all()
+
+
 class PostViewSet(ModelViewSet):
     """
     retrieve:
@@ -92,7 +122,7 @@ class UserViewSet(ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-class PostsTagList(ListAPIView):
+class PostsFilterByTag(ListAPIView):
     """
     Return the list of blog posts with the given tag's slug
     """
