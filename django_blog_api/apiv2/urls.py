@@ -3,7 +3,7 @@ from rest_framework.routers import SimpleRouter
 
 from .views import (PostViewSet, UserViewSet, PostsFilterByTag, AuthorPosts,
                     CurrentAuthorPosts, PostCommentsViewSet, TagsList,
-                    PostTagsViewSet)
+                    PostTagsViewSet, PostSearchView)
 
 router = SimpleRouter()
 router.register('posts', PostViewSet, basename='posts')
@@ -14,7 +14,8 @@ router.register('posts/(?P<post_pk>[^/.]+)/tags', PostTagsViewSet,
 router.register('users', UserViewSet, basename='users')
 
 urlpatterns = [
-    path('posts/filter/<slug:slug>/', PostsFilterByTag.as_view()),
+    path('posts/filter/<slug:tag_slug>/', PostsFilterByTag.as_view()),
+    path('posts/search/', PostSearchView.as_view()),
     path('users/current/posts/', CurrentAuthorPosts.as_view()),
     path('users/<int:pk>/posts/', AuthorPosts.as_view()),
     path('tags/', TagsList.as_view()),

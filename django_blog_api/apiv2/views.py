@@ -5,6 +5,8 @@ from rest_framework.permissions import (IsAuthenticatedOrReadOnly,
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth import get_user_model
+from django.http import Http404
+from django.db.models import Q
 from taggit.models import Tag
 
 from posts.models import Post, Comment
@@ -130,7 +132,7 @@ class PostsFilterByTag(ListAPIView):
     serializer_class = PostSerializer
 
     def filter_queryset(self, queryset):
-        return queryset.filter(tags__slug=self.kwargs.get('slug'))
+        return queryset.filter(tags__slug=self.kwargs.get('tag_slug'))
 
 
 class AuthorPosts(ListAPIView):
@@ -162,3 +164,17 @@ class TagsList(ListAPIView):
     """
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+
+
+class PostSearchView(ListAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        if not query:
+            raise Http404
+
+        return super().get_queryset().filter(
+            Q(title__icontains=query) | Q(author__username__icontains=query)
+        )
