@@ -21,16 +21,15 @@ urlpatterns = [
 
     # API version 1
     path('api/v1/', include('api.urls')),
-    path('api/v1/auth/', include('rest_auth.urls')),
-    path('api/v1/auth/registration/', include('rest_auth.registration.urls')),
+    path('api/v1/auth/', include('dj_rest_auth.urls')),
+    path('api/v1/auth/registration/',
+         include('dj_rest_auth.registration.urls')),
 
     # API version 2
     path('api/v2/', include('apiv2.urls')),
-    path('api/v2/auth/', include('rest_auth.urls')),
-    path('api/v2/auth/registration/', include('rest_auth.registration.urls')),
-
-    # Browsable API Auth
-    path('api-auth/', include('rest_framework.urls')),
+    path('api/v2/auth/', include('dj_rest_auth.urls')),
+    path('api/v2/auth/registration/',
+         include('dj_rest_auth.registration.urls')),
 
     # Docs
     path('docs/', schema_view.with_ui('redoc', cache_timeout=0)),
